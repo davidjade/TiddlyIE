@@ -194,7 +194,7 @@ STDMETHODIMP CTiddlyIE::save(BSTR bstrFilespec, BSTR bstrContent)
 
 	if (!bFoundDoctype || !bFoundMOTW)
 	{
-		return E_INVALIDARG;
+		return HRESULT_FROM_WIN32(ERROR_INVALID_DATA);
 	}
 
 	HWND hwnd;
@@ -215,7 +215,7 @@ STDMETHODIMP CTiddlyIE::save(BSTR bstrFilespec, BSTR bstrContent)
 		int fileidx = path.FindFileName();
 		if (fileidx == -1)
 		{
-			return E_INVALIDARG;	// no file name specified
+			return HRESULT_FROM_WIN32(ERROR_INVALID_NAME);	// no file name specified
 		}
 
 		CStringW filename = path.m_strPath.Mid(fileidx);
@@ -240,7 +240,7 @@ STDMETHODIMP CTiddlyIE::save(BSTR bstrFilespec, BSTR bstrContent)
 		if (!SelectedFilespec.MatchSpec(L"*.html"))
 		{
 			// we can't actually change the path so all we can do is fail
-			return E_FAIL;
+			return HRESULT_FROM_WIN32(ERROR_INVALID_NAME);
 		}
 
 		// Get the path to the IE cache dir, which is a dir that we're allowed
@@ -268,7 +268,7 @@ STDMETHODIMP CTiddlyIE::save(BSTR bstrFilespec, BSTR bstrContent)
 				if(cNeeded == 0)
 				{
 					// UTF-8 conversion failed
-					return E_FAIL;
+					return HRESULT_FROM_WIN32(GetLastError());
 				}
 
 				hr = file.Write(strContent, strContent.GetLength());

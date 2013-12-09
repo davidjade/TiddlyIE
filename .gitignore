@@ -7,4 +7,4 @@ x64/
 *.user
 *_i.*
 *_p.*
-
+dlldata.c
