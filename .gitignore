@@ -1,0 +1,10 @@
+Win32/
+x64/
+*.aps
+*.opensdf
+*.sdf
+*.suo
+*.user
+*_i.*
+*_p.*
+
