@@ -21,6 +21,12 @@ HKCR
 			}
 			TypeLib = s '{5FCD8755-F85F-4CB5-932E-E9FE21CF32D8}'
 			Version = s '1.0'
+			'Implemented Categories' = s ''
+			{
+				{59fb2056-d625-48d0-a944-1a85b5ab2640} = s ''   
+					{
+					}
+			}
 		}
 	}
 }
