@@ -1,0 +1,35 @@
+// TiddlyIEBHO.idl : IDL source for TiddlyIEBHO
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (TiddlyIEBHO.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+[
+	object,
+	uuid(54AC1464-B570-45BF-8D04-1B591521D985),
+	dual,
+	nonextensible,
+	pointer_default(unique)
+]
+interface ITiddlyIE : IDispatch{
+	[id(1)] HRESULT save([in] BSTR filespec, BSTR content);
+};
+[
+	uuid(5FCD8755-F85F-4CB5-932E-E9FE21CF32D8),
+	version(1.0),
+]
+library TiddlyIEBHOLib
+{
+	importlib("stdole2.tlb");
+	[
+		uuid(69DB3787-86FB-4186-9742-7B9062BE507A)		
+	]
+	coclass TiddlyIE
+	{
+		[default] interface ITiddlyIE;
+	};
+};
+
