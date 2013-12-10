@@ -68,6 +68,8 @@
     <None Include="TiddlyIEBHO.rgs">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="License.rtf" />
+    <None Include="readme.md" />
   </ItemGroup>
   <ItemGroup>
     <Midl Include="TiddlyIEBHO.idl">

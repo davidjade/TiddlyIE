@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+
+	<?define ProductName = "TiddyWiki Internet Explorer helper" ?>
+	<?define ProductVersion = "1.0 beta" ?>
+	<?define ProductFullVersion = "1.0.0" ?>
+	<?define ProductAuthor = "TinyOctopus LLC" ?>
+	<?define AuthorFolder = "TinyOctopus" ?>
+	<?define ProductAppFolder = "TiddlyIE" ?>
+
+	<?if $(var.Platform) = x64 ?>
+		<?define ProductDisplayName = "$(var.ProductName) 64-bit" ?>
+		<?define Win64 = "yes" ?>
+		<?define PlatformProgramFilesFolder = "ProgramFiles64Folder" ?>
+	<?else ?>
+		<?define ProductDisplayName = "$(var.ProductName)" ?>
+		<?define Win64 = "no" ?>
+		<?define PlatformProgramFilesFolder = "ProgramFilesFolder" ?>
+	<?endif ?>
+
+
+	<Product Id="*" 
+			 Name="$(var.ProductDisplayName) (v$(var.ProductVersion))"
+			 Language="1033" 
+			 Manufacturer="$(var.ProductAuthor)"
+			 Version="$(var.ProductFullVersion)"
+			 UpgradeCode="c1ca040d-35b2-4130-bea8-72e257f5787c">
+		<Package InstallerVersion="405" Compressed="yes" InstallScope="perMachine" />
+
+		<Condition Message="A 64-bit operating system was detected, please use the 64-bit installer.">
+			<?if $(var.Win64) = "yes" ?>
+				VersionNT64
+			<?else?>
+				NOT VersionNT64
+			<?endif?>
+		</Condition>
+		
+		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+		<MediaTemplate EmbedCab="yes" />
+
+		<UIRef Id="WixUI_Minimal" />
+
+		<WixVariable Id="WixUILicenseRtf"
+					 Value="..\License.rtf" />
+
+		<Feature Id="ProductFeature" Title="Setup" Level="1">
+			<ComponentGroupRef Id="ProductComponents" />
+			<?if $(var.Platform) = x64 ?>
+				<ComponentGroupRef Id="ProductComponentsx86" />
+			<?endif ?>
+		</Feature>
+
+	</Product>
+
+	<Fragment>
+		<Directory Id="TARGETDIR" Name="SourceDir">
+			<Directory Id="$(var.PlatformProgramFilesFolder)">
+				<Directory Id='TinyOctopus' Name='$(var.AuthorFolder)'>
+					<Directory Id="ApplicationRootDirectory" Name="$(var.ProductAppFolder)" />
+				</Directory>
+			</Directory>
+			<?if $(var.Platform) = x64 ?>
+				<Directory Id="ProgramFilesFolder">
+					<Directory Id='TinyOctopusx86' Name='$(var.AuthorFolder)'>
+						<Directory Id="ApplicationRootDirectoryx86" Name="$(var.ProductAppFolder)" />
+					</Directory>
+				</Directory>
+			<?endif ?>
+		</Directory>
+	</Fragment>
+
+	<Fragment>
+		<ComponentGroup Id="ProductComponents" Directory="ApplicationRootDirectory">
+			<Component Id="ProductComponent" Guid="*">
+				<File Id="ApplicationFile" Name="$(var.TiddlyIEBHO.TargetFileName)" Source="$(var.TiddlyIEBHO.TargetPath)" DiskId="1" KeyPath="yes" SelfRegCost="1"/>
+			</Component>
+		</ComponentGroup>
+		<?if $(var.Platform) = x64 ?>
+			<ComponentGroup Id="ProductComponentsx86" Directory="ApplicationRootDirectoryx86">
+				<Component Id="ProductComponentx86" Guid="*" Win64="no">
+					<File Id="ApplicationFilex86" Name="$(var.TiddlyIEBHO.TargetFileName)" Source="$(var.SolutionDir)Win32\$(var.TiddlyIEBHO.Configuration)\$(var.TiddlyIEBHO.TargetFileName)" DiskId="1" KeyPath="yes" SelfRegCost="1"/>
+				</Component>
+			</ComponentGroup>
+		<?endif ?>
+	</Fragment>
+
+</Wix>
