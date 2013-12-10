@@ -99,18 +99,20 @@ HRESULT CTiddlyIE::AddCustomObject(IDispatch *custObj, TCHAR* name)
 	// only for local documents
 	CComPtr<IHTMLLocation> spLocation;
 	hr = spHTMLDoc->get_location(&spLocation);
-	if (SUCCEEDED(hr))
+	if (FAILED(hr))
 	{
-		CComBSTR protocol;
-		hr = spLocation->get_protocol(&protocol);
-		if (FAILED(hr))
-		{
-			return hr;
-		}
-		else if (StrCmpIW(protocol, L"file:") != 0)
-		{
-			return S_OK;
-		}
+		return hr;
+	}
+
+	CComBSTR protocol;
+	hr = spLocation->get_protocol(&protocol);
+	if (FAILED(hr))
+	{
+		return hr;
+	}
+	else if (StrCmpIW(protocol, L"file:") != 0)
+	{
+		return S_FALSE;
 	}
 
 	CComPtr<IHTMLWindow2> spWindow;
